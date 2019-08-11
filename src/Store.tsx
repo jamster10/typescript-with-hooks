@@ -1,28 +1,31 @@
-import React from 'react';
-import { jsxAttribute } from '@babel/types';
+import React from "react";
+import { jsxAttribute } from "@babel/types";
 
 
-interface IState {
-  episodes: [], 
+const initialState: IState = {
+  episodes: [],
   favourites: []
+};
+
+export const Store = React.createContext<IState | any> (initialState);
+
+function reducer(state: IState, action: IAction ) {
+  console.log(action)
+
+  switch (action.type) {
+    case "FETCH_DATA":
+      return { ...state, episodes: action.payload };
+    case "ADD_FAV":      
+      return {...state, favourites:[...state.favourites, action.payload]}
+    default: 
+    return state
+  }
 }
-
- const initialState:IState = {
-   episodes: [],
-   favourites: [] 
- }
- 
- export const Store = React.createContext<IState>(initialState);
-
-function reducer(){
-
-}
-
 
 export function StoreProvider(props: any): JSX.Element {
-  return <Store.Provider value ={initialState}>{props.children}</Store.Provider>
 
-
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  return <Store.Provider value={{state, dispatch}}>{props.children}</Store.Provider>;
 }
 // interface IState{
 //   episodes: [],
@@ -35,7 +38,6 @@ export function StoreProvider(props: any): JSX.Element {
 // };
 
 // export const Store = React.createContext<IState>(initialState);
-
 
 // function reducer() {
 
