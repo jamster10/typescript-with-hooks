@@ -1,5 +1,6 @@
 import React from "react";
 import { jsxAttribute } from "@babel/types";
+import { IState, IAction } from './interfaces/interfaces'
 
 
 const initialState: IState = {
@@ -10,13 +11,15 @@ const initialState: IState = {
 export const Store = React.createContext<IState | any> (initialState);
 
 function reducer(state: IState, action: IAction ) {
-  console.log(action)
+  console.log('here')
 
   switch (action.type) {
     case "FETCH_DATA":
       return { ...state, episodes: action.payload };
     case "ADD_FAV":      
       return {...state, favourites:[...state.favourites, action.payload]}
+    case "REMOVE_FAV":      
+      return {...state, favourites: action.payload}
     default: 
     return state
   }
